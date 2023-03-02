@@ -31,6 +31,7 @@ type cloudHub struct {
 	dispatcher     dispatcher.MessageDispatcher
 }
 
+// TODO:见到过多次这个语法，应该是编译期的一个接口检查吧
 var _ core.Module = (*cloudHub)(nil)
 
 func newCloudHub(enable bool) *cloudHub {
@@ -41,6 +42,7 @@ func newCloudHub(enable bool) *cloudHub {
 
 	sessionManager := session.NewSessionManager(hubconfig.Config.NodeLimit)
 
+	// MessageDispatcher 和 MessageHandler 都需要sessionManage去管理NodeSession
 	messageDispatcher := dispatcher.NewMessageDispatcher(
 		sessionManager, objectSyncInformer.Lister(),
 		clusterObjectSyncInformer.Lister(), client.GetCRDClient())
@@ -66,6 +68,7 @@ func Register(hub *v1alpha1.CloudHub) {
 	core.Register(newCloudHub(hub.Enable))
 }
 
+// Note: 下面实现了 interface `beehive.core.Moudle`的接口，所以说cloudHub就是Module的一个实现类
 func (ch *cloudHub) Name() string {
 	return modules.CloudHubModuleName
 }

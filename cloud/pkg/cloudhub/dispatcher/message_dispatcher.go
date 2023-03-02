@@ -120,6 +120,7 @@ func NewMessageDispatcher(
 }
 
 func (md *messageDispatcher) DispatchDownstream() {
+	// go DispatchDownstream(), 另起一个协程循环执行接收message
 	for {
 		select {
 		case <-beehivecontext.Done():
@@ -145,7 +146,8 @@ func (md *messageDispatcher) DispatchDownstream() {
 				klog.Warningf("skip message not to edge node %s: %+v, content %s", nodeID, msg)
 				continue
 			}
-
+			
+			// 使用queue进行调度
 			switch {
 			case noAckRequired(&msg):
 				md.enqueueNoAckMessage(nodeID, &msg)

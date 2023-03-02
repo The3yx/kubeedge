@@ -38,6 +38,7 @@ const (
 	CloudHubSubsystem = "CloudHub"
 )
 
+// ConnectedNodes is a gauge struct. 关键在于prometheus库的用法, 这是一个资源监控相关的库
 var (
 	ConnectedNodes = prometheus.NewGauge(
 		prometheus.GaugeOpts{
