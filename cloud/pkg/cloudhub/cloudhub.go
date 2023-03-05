@@ -64,6 +64,8 @@ func newCloudHub(enable bool) *cloudHub {
 }
 
 func Register(hub *v1alpha1.CloudHub) {
+	// v1alpha1.CloudHub(kubeedge/pkg/api/componentconfig/cloudcore/v1alpha1/types.go) indicates the config of CloudHub module
+	// 把CloudHub的config都转移到了api里，应该后续可以手动配置config，在cloudhub package里只实现加载config的逻辑
 	hubconfig.InitConfigure(hub)
 	core.Register(newCloudHub(hub.Enable))
 }

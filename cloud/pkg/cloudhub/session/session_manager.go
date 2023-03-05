@@ -29,12 +29,12 @@ import (
 type Manager struct {
 	// NodeNumber is the number of currently connected edge
 	// nodes for single cloudHub instance
-	NodeNumber int32
+	NodeNumber int32	// 当前cloudhub连接的Node个数
 	// NodeLimit is the maximum number of edge nodes that can
 	// connected to single cloudHub instance
-	NodeLimit int32
+	NodeLimit int32		// 节点限制，超过节点限制Cloudhub报错
 	// NodeSessions maps a node ID to NodeSession
-	NodeSessions sync.Map
+	NodeSessions sync.Map	// 存储Node的在线情况
 }
 
 // NewSessionManager initializes a new SessionManager

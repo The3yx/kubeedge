@@ -50,6 +50,8 @@ type Handler interface {
 func NewMessageHandler(
 	KeepaliveInterval int,
 	manager *session.Manager,
+	// 这里只用了reliableclient.Interface，实际的客户端对象是client.GetCRDClient()(github.com/kubeedge/kubeedge/cloud/pkg/common/client/client.go)
+	// 这个client是K8s的client
 	reliableClient reliableclient.Interface,
 	dispatcher dispatcher.MessageDispatcher) Handler {
 	messageHandler := &messageHandler{
@@ -65,8 +67,10 @@ func NewMessageHandler(
 	return messageHandler
 }
 
+
+// messageHandler是Handler的实现
 type messageHandler struct {
-	KeepaliveInterval int
+	KeepaliveInterval int	// 心跳检测间隔
 
 	// SessionManager
 	SessionManager *session.Manager

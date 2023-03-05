@@ -87,15 +87,20 @@ type MessageDispatcher interface {
 	Publish(msg *beehivemodel.Message) error
 }
 
+
+// messageDispatcher是MessageDispatcher的实现
 type messageDispatcher struct {
 	// NodeMessagePools stores and manages access to nodeMessagePool, maintaining
 	// the mappings between nodeID and its nodeMessagePool.
 	NodeMessagePools sync.Map
 
 	// SessionManager
+	// TODO:为什么在messageHandler和messageDispatcher里都有session.Manager
+	// answer: 可能是因为session.Manager里提供的功能比较多，一部分是messageHandler的功能(管理session的增删)，一部分是messageDispatcher(session消息的接发)的功能
 	SessionManager *session.Manager
 
 	// objectSync client for interacting with Kubernetes API servers.
+	// TODO:为什么在messageHandler和messageDispatcher里都有reliableclient.Interface
 	reliableClient reliableclient.Interface
 
 	// objectSyncLister can list/get objectSync from the shared informer's store
