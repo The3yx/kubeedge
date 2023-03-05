@@ -84,6 +84,8 @@ type messageHandler struct {
 
 // initServerEntries register handler func
 func (mh *messageHandler) initServerEntries() {
+	// note: mh.HandleMessage will be called in github.com/kubeedge/viaduct/pkg/mux/mux.go/dispatch/entry.handleFunc(container, writer)
+	// 可以从这里一层层进去看看如何执行到entry.handleFunc(container, writer)的
 	mux.Entry(mux.NewPattern("*").Op("*"), mh.HandleMessage)
 }
 
