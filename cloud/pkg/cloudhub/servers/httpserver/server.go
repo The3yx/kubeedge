@@ -40,12 +40,14 @@ import (
 
 // StartHTTPServer starts the http service
 func StartHTTPServer() {
+	// 这里的serverContainer应该就是一个服务的容器
 	serverContainer := restful.NewContainer()
 	ws := new(restful.WebService)
 	ws.Path("/")
 	ws.Route(ws.GET(constants.DefaultCertURL).To(edgeCoreClientCert))
 	ws.Route(ws.GET(constants.DefaultCAURL).To(getCA))
 	ws.Route(ws.POST(constants.DefaultNodeUpgradeURL).To(upgradeEdge))
+	// 调用Add应该就会启动这个服务
 	serverContainer.Add(ws)
 
 	addr := fmt.Sprintf("%s:%d", hubconfig.Config.HTTPS.Address, hubconfig.Config.HTTPS.Port)

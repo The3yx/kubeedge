@@ -17,6 +17,9 @@ import (
 
 // StartCloudHub starts the cloud hub service
 func StartCloudHub(messageHandler handler.Handler) {
+	// note: WebsocketServer和QuicServer都在github.com/kubeedge/viaduct/pkg/server中实现
+	// viaduct/pkg下不仅有server还有client的实现，也是支持websocket和quic
+	// 由于websocket和quic是比较常用的通信协议，所以写成了一个module供各个模块使用
 	// start websocket server
 	if hubconfig.Config.WebSocket.Enable {
 		go startWebsocketServer(messageHandler)

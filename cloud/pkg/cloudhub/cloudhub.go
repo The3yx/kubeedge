@@ -110,6 +110,8 @@ func (ch *cloudHub) Start() {
 	// HttpServer mainly used to issue certificates for the edge
 	go httpserver.StartHTTPServer()
 
+
+	// note:这里把messageHandler传给了server, server里进行Handler的操作
 	servers.StartCloudHub(ch.messageHandler)
 
 	if hubconfig.Config.UnixSocket.Enable {
