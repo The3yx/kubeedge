@@ -103,13 +103,16 @@ func (s *Server) getProtoServer(opts Options) error {
 	return fmt.Errorf("bad protocol type(%s)", s.Type)
 }
 
+/*------------------implement of interface `ProtocolServer`---------------------*/
 // listen and serve
 func (s *Server) ListenAndServeTLS(certFile, keyFile string) error {
+	// 1. get tls config
 	tlsConfig, err := s.getTLSConfig(certFile, keyFile)
 	if err != nil {
 		return err
 	}
 
+	// 2. get proto server with different protocol.
 	err = s.getProtoServer(Options{
 		Addr:               s.Addr,
 		TLS:                tlsConfig,

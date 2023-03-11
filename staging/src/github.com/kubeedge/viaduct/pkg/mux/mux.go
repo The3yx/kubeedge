@@ -51,6 +51,8 @@ func (mux *MessageMux) Entry(pattern *MessagePattern, handle func(*MessageContai
 	return mux
 }
 
+
+// TODO:没懂实在干嘛
 func (mux *MessageMux) extractParameters(expression *MessageExpression, resource string) map[string]string {
 	parameters := make(map[string]string)
 	matches := expression.Matcher.FindStringSubmatch(resource)

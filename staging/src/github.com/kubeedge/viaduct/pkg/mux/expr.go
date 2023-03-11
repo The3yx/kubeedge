@@ -19,6 +19,8 @@ func NewExpression() *MessageExpression {
 	return &MessageExpression{}
 }
 
+
+// process an expression string to MessageExpression struct
 func (exp *MessageExpression) GetExpression(resource string) *MessageExpression {
 	var buffer bytes.Buffer
 	var varNames []string
