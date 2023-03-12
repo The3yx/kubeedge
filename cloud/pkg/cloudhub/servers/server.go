@@ -55,6 +55,7 @@ func createTLSConfig(ca, cert, key []byte) tls.Config {
 	}
 }
 
+// server是module viaduct中实现的, viaduct是server和client的通信模块，定义了server和client，支持websocket和quic
 func startWebsocketServer(messageHandler handler.Handler) {
 	tlsConfig := createTLSConfig(hubconfig.Config.Ca, hubconfig.Config.Cert, hubconfig.Config.Key)
 	svc := server.Server{

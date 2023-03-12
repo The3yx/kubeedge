@@ -125,7 +125,6 @@ func NewMessageDispatcher(
 }
 
 func (md *messageDispatcher) DispatchDownstream() {
-	// go DispatchDownstream(), 另起一个协程循环执行接收message
 	for {
 		select {
 		case <-beehivecontext.Done():
