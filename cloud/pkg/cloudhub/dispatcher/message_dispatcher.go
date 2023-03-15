@@ -87,7 +87,6 @@ type MessageDispatcher interface {
 	Publish(msg *beehivemodel.Message) error
 }
 
-
 // messageDispatcher是MessageDispatcher的实现
 type messageDispatcher struct {
 	// NodeMessagePools stores and manages access to nodeMessagePool, maintaining
@@ -132,6 +131,8 @@ func (md *messageDispatcher) DispatchDownstream() {
 			return
 
 		default:
+			// beehivecontext.Recevie(model.SrcCloudHub)是从beehive注册的所有模块中接受消息
+			// note: 猜测: DispatchDownstream函数是cloud->edge, cloudhub模块要向edge发送的消息也不是凭空产生的，可能是预先设置，也可能是其他模块(比如cloud的cmd)发送的消息
 			msg, err := beehivecontext.Receive(model.SrcCloudHub)
 			if err != nil {
 				klog.Errorf("receive message failed %v", err)
@@ -150,8 +151,9 @@ func (md *messageDispatcher) DispatchDownstream() {
 				klog.Warningf("skip message not to edge node %s: %+v, content %s", nodeID, msg)
 				continue
 			}
-			
-			// 使用queue进行调度
+
+			// 这里将msg存储至nodeID对应的NodeMessagePool(其实就是queue)中
+			// note: 消息真正的发送在node_session.go中
 			switch {
 			case noAckRequired(&msg):
 				md.enqueueNoAckMessage(nodeID, &msg)
@@ -423,6 +425,7 @@ func (md *messageDispatcher) GetNodeMessagePool(nodeID string) *common.NodeMessa
 }
 
 func (md *messageDispatcher) AddNodeMessagePool(nodeID string, pool *common.NodeMessagePool) {
+	// messageDispatcher里的NodeMessagePools是Map: key->nodeID, value:common.NodeMessagePool(里面就是queue)
 	md.NodeMessagePools.Store(nodeID, pool)
 }
 
