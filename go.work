@@ -1,6 +1,7 @@
 go 1.20
 
 use (
+	.
 	./staging/src/github.com/kubeedge/beehive
 	./staging/src/github.com/kubeedge/viaduct
 )

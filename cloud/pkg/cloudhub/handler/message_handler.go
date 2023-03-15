@@ -37,6 +37,8 @@ type Handler interface {
 	// HandleMessage is invoked when a new message arrives.
 	HandleMessage(container *mux.MessageContainer, writer mux.ResponseWriter)
 
+	// note: OnEdgeNodeConnect和OnEdgeNodeDisconnect都是在HandleConnection中被调用
+
 	// OnEdgeNodeConnect is invoked when a new connection is established
 	OnEdgeNodeConnect(info *model.HubInfo, connection conn.Connection) error
 
@@ -67,10 +69,9 @@ func NewMessageHandler(
 	return messageHandler
 }
 
-
 // messageHandler是Handler的实现
 type messageHandler struct {
-	KeepaliveInterval int	// 心跳检测间隔
+	KeepaliveInterval int // 心跳检测间隔
 
 	// SessionManager
 	SessionManager *session.Manager
