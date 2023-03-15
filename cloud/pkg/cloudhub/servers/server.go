@@ -59,9 +59,32 @@ func createTLSConfig(ca, cert, key []byte) tls.Config {
 func startWebsocketServer(messageHandler handler.Handler) {
 	tlsConfig := createTLSConfig(hubconfig.Config.Ca, hubconfig.Config.Cert, hubconfig.Config.Key)
 	svc := server.Server{
-		Type:               api.ProtocolTypeWS,
-		TLSConfig:          &tlsConfig,
-		AutoRoute:          true,
+		Type:      api.ProtocolTypeWS,
+		TLSConfig: &tlsConfig,
+		AutoRoute: true,
+		/*
+			note:
+			type Handler interface {
+				// HandleConnection is invoked when a new connection arrives
+				HandleConnection(connection conn.Connection)
+
+				// HandleMessage is invoked when a new message arrives.
+				HandleMessage(container *mux.MessageContainer, writer mux.ResponseWriter)
+
+				// note: OnEdgeNodeConnect和OnEdgeNodeDisconnect都是在HandleConnection中被调用
+
+				// OnEdgeNodeConnect is invoked when a new connection is established
+				OnEdgeNodeConnect(info *model.HubInfo, connection conn.Connection) error
+
+				// OnEdgeNodeDisconnect is invoked when a connection is lost
+				OnEdgeNodeDisconnect(info *model.HubInfo, connection conn.Connection)
+
+				// OnReadTransportErr is invoked when the connection read message err
+				OnReadTransportErr(nodeID, projectID string)
+			}
+			messageHandler.HandleConnection和messageHandler.OnReadTransportErr作为callback函数传入
+			handleMessage在MessageHandler创建时就被传入viaduct的mux
+		*/
 		ConnNotify:         messageHandler.HandleConnection,
 		OnReadTransportErr: messageHandler.OnReadTransportErr,
 		Addr:               fmt.Sprintf("%s:%d", hubconfig.Config.WebSocket.Address, hubconfig.Config.WebSocket.Port),
