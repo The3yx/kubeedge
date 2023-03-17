@@ -91,6 +91,7 @@ func startWebsocketServer(messageHandler handler.Handler) {
 		ExOpts:             api.WSServerOption{Path: "/"},
 	}
 	klog.Infof("Starting cloudhub %s server", api.ProtocolTypeWS)
+	// note:这里在klog的同时, 启动了服务svc.ListenAndServeTLS("", "")
 	klog.Exit(svc.ListenAndServeTLS("", ""))
 }
 

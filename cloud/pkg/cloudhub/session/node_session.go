@@ -123,6 +123,7 @@ func (ns *NodeSession) KeepAliveMessage() {
 }
 
 // ReceiveMessageAck receive the message ack from edge node
+// note: ReceiveMessageAck函数在session_manager.go中被调用
 func (ns *NodeSession) ReceiveMessageAck(parentID string) {
 	ackChan, exist := ns.ackMessageCache.Load(parentID)
 	if exist {
@@ -132,6 +133,7 @@ func (ns *NodeSession) ReceiveMessageAck(parentID string) {
 }
 
 // Start the main goroutine responsible for serving node session
+// note: Start函数在message_handler.go的handleConnection中被调用
 func (ns *NodeSession) Start() {
 	klog.Infof("Start session for edge node %s", ns.nodeID)
 
